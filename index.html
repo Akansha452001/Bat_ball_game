@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cricket Game</title>
+    <style>
+        body {
+            text-align: center;
+            background-image: url("./output-onlinepngtools (1).png");
+            background-repeat: no-repeat;
+            background-size: 100% 100vh;
+        }
+
+        button {
+            padding: 10px;
+            margin: 10px;
+            color: black;
+            border-radius: 0.7rem;
+            border: none;
+            background-color: rgb(196, 170, 119);
+            font-size: 4vmin;
+            cursor: pointer;
+            outline: none;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            box-shadow: 4px 4px 4px 4px rgb(234, 243, 252);
+        }
+
+        h1 {
+            font-size: 6vmin;
+        }
+
+        div {
+            margin: 70px;
+        }
+
+        #use {
+            color: rgb(102, 0, 255);
+        }
+    </style>
+</head>
+<body>
+    <h1>Bat Ball Stump Game</h1>
+    <button onclick="fun(1)" class="btn btn-outline-info">Bat</button>
+    <button onclick="fun(2)">Ball</button>
+    <button onclick="fun(3)">Stump</button>
+    <button onclick="resetGame()">Reset</button>
+    <div>
+        <h2 class="choice1"></h2>
+        <h2 class="choice2"></h2>
+        <h3>Score Board</h3>
+        <h2 id="score"></h2>
+        <h2 id="use"></h2>
+    </div>
+    <script>
+        alert("Instructions: You are playing against the computer. Click any one of the buttons to make your choice.");
+
+        function fun(b) {
+            let arr = ['Bat', 'Ball', 'Stump'];
+            let a = Math.ceil(Math.random() * 3);
+
+            let who_won = JSON.parse(localStorage.getItem('who_won')) || { you_won: 0, computer_won: 0 };
+
+            document.querySelector(".choice1").innerHTML = `Player choice: ${arr[b - 1]}`;
+            document.querySelector(".choice2").innerHTML = `Computer choice: ${arr[a - 1]}`;
+
+            if ((a === 1 && b === 2) || (a === 2 && b === 3) || (a === 3 && b === 1)) {
+                who_won.computer_won++;
+                document.querySelector("#use").innerHTML = "Computer Won";
+            } else if ((a === 2 && b === 1) || (a === 3 && b === 2) || (a === 1 && b === 3)) {
+                who_won.you_won++;
+                document.querySelector("#use").innerHTML = "You Won";
+            } else {
+                document.querySelector("#use").innerHTML = "It's a Tie";
+            }
+
+            localStorage.setItem('who_won', JSON.stringify(who_won));
+            displayScore(who_won);
+        }
+
+        function displayScore(who_won) {
+            document.querySelector("#score").innerHTML = `You won: ${who_won.you_won} <br> Computer won: ${who_won.computer_won}`;
+        }
+
+        function resetGame() {
+            localStorage.clear();
+            let who_won = { you_won: 0, computer_won: 0 };
+            displayScore(who_won);
+            document.querySelector("#use").innerHTML = "";
+            document.querySelector(".choice1").innerHTML = "";
+            document.querySelector(".choice2").innerHTML = "";
+        }
+
+        // Initialize score display
+        let initialScore = JSON.parse(localStorage.getItem('who_won')) || { you_won: 0, computer_won: 0 };
+        displayScore(initialScore);
+    </script>
+</body>
+</html>
