@@ -38,35 +38,69 @@
         }
 
         #use {
-            color: rgb(102, 0, 255);
+            color: rgb(32, 23, 204);
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .choicebox {
+            border: 1px solid black;
+            backdrop-filter: blur(3px);
+            padding: 10px;
+        }
+
+        #scoreboard {
+            color: rgb(253, 24, 24);
+        }
+
+        @media (max-width: 600px) {
+            button {
+                font-size: 6vmin;
+            }
+
+            h1 {
+                font-size: 8vmin;
+            }
+
+            #use {
+                font-size: 5vmin;
+            }
+
+            #scoreboard {
+                font-size: 5vmin;
+            }
         }
     </style>
 </head>
 <body>
     <h1>Bat Ball Stump Game</h1>
-    <button onclick="fun(1)">
+    <button onclick="fun(1)" aria-label="Select Bat">
         <img src="./bat.png" alt="Bat" style="width: 50px; height: 50px;"/>
         Bat
     </button>
-    <button onclick="fun(2)">
+    <button onclick="fun(2)" aria-label="Select Ball">
         <img src="./cricket.png" alt="Ball" style="width: 50px; height: 50px;"/>
         Ball
     </button>
-    <button onclick="fun(3)">
+    <button onclick="fun(3)" aria-label="Select Stump">
         <img src="./wicket.png" alt="Stump" style="width: 50px; height: 50px;"/>
         Stump
     </button>
-   
+
     <div>
-        <h2 class="choice1"></h2>
-        <h2 class="choice2"></h2>
-        <h3>Score Board</h3>
+        <div class="choice"> 
+            <h2 class="choice1"></h2>
+            <h2 class="choice2"></h2>
+            <h2 id="use"></h2>
+        </div>
+        <h2 id="scoreboard">Score Board</h2>
         <h2 id="score"></h2>
-        <h2 id="use"></h2>
     </div>
+
     <button onclick="resetGame()">Reset</button>
+
     <script>
-        alert("Instructions: You are playing against the computer. Click any one of the buttons to make your choice.Your score will remain till you clicked reset button.");
+        alert("Instructions: You are playing against the computer. Click any one of the buttons to make your choice.");
 
         function fun(b) {
             let arr = ['Bat', 'Ball', 'Stump'];
@@ -89,6 +123,9 @@
 
             localStorage.setItem('who_won', JSON.stringify(who_won));
             displayScore(who_won);
+
+            // Add the 'choicebox' class only after a choice has been made
+            document.querySelector(".choice").classList.add("choicebox");
         }
 
         function displayScore(who_won) {
@@ -102,6 +139,9 @@
             document.querySelector("#use").innerHTML = "";
             document.querySelector(".choice1").innerHTML = "";
             document.querySelector(".choice2").innerHTML = "";
+
+            // Remove the 'choicebox' class on reset
+            document.querySelector(".choice").classList.remove("choicebox");
         }
 
         // Initialize score display
